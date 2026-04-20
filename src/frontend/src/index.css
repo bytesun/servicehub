@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk", sans-serif;
+    --font-body: "DM Sans", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+    --radius: 0.75rem;
+
+    --background: 0.97 0.01 100;
+    --foreground: 0.16 0.02 260;
+    --card: 0.99 0.02 95;
+    --card-foreground: 0.16 0.02 260;
+    --popover: 0.99 0.02 95;
+    --popover-foreground: 0.16 0.02 260;
+
+    --primary: 0.56 0.14 183;
+    --primary-foreground: 0.98 0.01 100;
+
+    --secondary: 0.88 0.06 95;
+    --secondary-foreground: 0.28 0.03 280;
+    --muted: 0.88 0.06 95;
+    --muted-foreground: 0.55 0.04 260;
+
+    --accent: 0.62 0.16 150;
+    --accent-foreground: 0.98 0.01 100;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.98 0 0;
+
+    --border: 0.92 0.02 100;
+    --input: 0.94 0.03 100;
+    --ring: 0.56 0.14 183;
+
+    --chart-1: 0.62 0.16 150;
+    --chart-2: 0.56 0.14 183;
+    --chart-3: 0.65 0.15 75;
+    --chart-4: 0.72 0.12 120;
+    --chart-5: 0.58 0.13 30;
+
+    --sidebar: 0.97 0.01 100;
+    --sidebar-foreground: 0.16 0.02 260;
+    --sidebar-primary: 0.56 0.14 183;
+    --sidebar-primary-foreground: 0.98 0.01 100;
+    --sidebar-accent: 0.88 0.06 95;
+    --sidebar-accent-foreground: 0.28 0.03 280;
+    --sidebar-border: 0.92 0.02 100;
+    --sidebar-ring: 0.56 0.14 183;
+  }
+
+  .dark {
+    --background: 0.12 0.01 260;
+    --foreground: 0.94 0.02 100;
+    --card: 0.17 0.02 260;
+    --card-foreground: 0.94 0.02 100;
+    --popover: 0.21 0.03 260;
+    --popover-foreground: 0.94 0.02 100;
+
+    --primary: 0.72 0.16 150;
+    --primary-foreground: 0.12 0.01 260;
+
+    --secondary: 0.25 0.04 100;
+    --secondary-foreground: 0.85 0.04 100;
+    --muted: 0.25 0.04 100;
+    --muted-foreground: 0.65 0.04 100;
+
+    --accent: 0.72 0.16 150;
+    --accent-foreground: 0.12 0.01 260;
+
+    --destructive: 0.65 0.19 22;
+    --destructive-foreground: 0.12 0.01 260;
+
+    --border: 0.27 0.02 260;
+    --input: 0.27 0.02 260;
+    --ring: 0.72 0.16 150;
+
+    --chart-1: 0.72 0.16 150;
+    --chart-2: 0.65 0.15 75;
+    --chart-3: 0.78 0.14 120;
+    --chart-4: 0.68 0.18 180;
+    --chart-5: 0.72 0.14 30;
+
+    --sidebar: 0.17 0.02 260;
+    --sidebar-foreground: 0.94 0.02 100;
+    --sidebar-primary: 0.72 0.16 150;
+    --sidebar-primary-foreground: 0.12 0.01 260;
+    --sidebar-accent: 0.25 0.04 100;
+    --sidebar-accent-foreground: 0.85 0.04 100;
+    --sidebar-border: 0.27 0.02 260;
+    --sidebar-ring: 0.72 0.16 150;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+  font-weight: 400 700;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/assets/fonts/DMSans.woff2") format("woff2");
+  font-weight: 400 700;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-weight: 400 600;
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .quote-badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-semibold rounded-full bg-accent/10 text-accent;
+  }
+
+  .quote-state-pending {
+    @apply bg-muted/20 text-muted-foreground;
+  }
+
+  .quote-state-offered {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .quote-state-accepted {
+    background-color: oklch(var(--accent) / 0.12);
+    color: oklch(var(--accent));
+  }
+
+  .quote-state-rejected {
+    @apply bg-destructive/10 text-destructive;
+  }
+
+  .quote-state-cancelled {
+    @apply bg-muted/20 text-muted-foreground;
+  }
+
+  .booking-state-inprogress {
+    background-color: oklch(var(--primary) / 0.12);
+    color: oklch(var(--primary));
+  }
+
+  .booking-state-disputed {
+    background-color: oklch(var(--destructive) / 0.12);
+    color: oklch(var(--destructive));
+  }
+
+  .font-mono-amount {
+    @apply font-mono tabular-nums tracking-tight;
+  }
+
+  .shadow-subtle {
+    box-shadow: 0 1px 3px 0 oklch(0 0 0 / 0.06), 0 1px 2px -1px
+      oklch(0 0 0 / 0.04);
+  }
+
+  .service-card {
+    @apply bg-card border border-border rounded-lg p-4 hover:shadow-md transition-smooth cursor-pointer;
+  }
+
+  .input-field {
+    @apply bg-input border border-border rounded-md px-3 py-2 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 dark:focus:ring-offset-background transition-smooth;
+  }
+
+  .button-primary {
+    @apply bg-primary text-primary-foreground px-4 py-2 rounded-md font-semibold hover:bg-primary/90 active:scale-95 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .button-secondary {
+    @apply bg-secondary text-secondary-foreground px-4 py-2 rounded-md font-semibold hover:bg-secondary/90 active:scale-95 transition-smooth;
+  }
+
+  .provider-badge {
+    @apply inline-flex items-center gap-1.5 text-xs font-medium bg-secondary/30 text-secondary-foreground px-2 py-1 rounded-full;
+  }
+
+  .loading-skeleton {
+    @apply animate-pulse bg-muted rounded-md;
+  }
+
+  .error-state {
+    @apply bg-destructive/10 text-destructive border border-destructive/20 rounded-md p-3 text-sm;
+  }
+
+  .empty-state {
+    @apply flex flex-col items-center justify-center py-12 text-center;
+  }
+
+  .empty-state-icon {
+    @apply text-muted-foreground mb-4 text-5xl opacity-40;
+  }
+
+  .empty-state-text {
+    @apply text-muted-foreground text-sm mb-4;
+  }
+}

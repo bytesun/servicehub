@@ -1,0 +1,159 @@
+// Version: 1.0.0
+type BookingId__572944220 = Nat;
+type BookingStatus__96719981 =
+  {#cancelled; #completed; #disputed; #paymentPending; #started};
+type Booking__1057793126 =
+  {
+    agreedPrice : Nat;
+    var bookingStatus : BookingStatus__96719981;
+    clientId : UserId__158757552;
+    createdAt : Timestamp__301639476;
+    var escrowStatus : EscrowStatus__19679037;
+    id : BookingId__572944220;
+    providerId : UserId__158757552;
+    quoteId : QuoteId__928430161;
+    serviceId : ServiceId__271116140;
+    var updatedAt : Timestamp__301639476
+  };
+type EscrowStatus__19679037 = {#held; #none; #refunded; #released};
+type EstimationBreakdown__271673480 =
+  {hourlyRate : Nat; hours : Nat; labor : Nat; materials : Nat; notes : Text};
+type InvoiceId__909937669 = Nat;
+type Invoice__447005592 =
+  {
+    amount : Nat;
+    bookingId : BookingId__572944220;
+    clientId : UserId__158757552;
+    createdAt : Timestamp__301639476;
+    id : InvoiceId__909937669;
+    providerId : UserId__158757552;
+    serviceId : ServiceId__271116140
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NotificationId__307495059 = Nat;
+type NotificationType__908192046 =
+  {#bookingConfirmed; #paymentReceived; #quoteReceived; #replyReceived};
+type Notification__264708741 =
+  {
+    body : Text;
+    createdAt : Timestamp__301639476;
+    id : NotificationId__307495059;
+    var isRead : Bool;
+    link : Text;
+    notifType : NotificationType__908192046;
+    recipientId : UserId__158757552;
+    title : Text
+  };
+type Notification__797358294 = Notification__264708741;
+type PriceType__421098867 = {#fixed; #onSiteEstimate};
+type QuoteId__928430161 = Nat;
+type QuoteStatus__535515428 =
+  {#accepted; #cancelled; #pending; #rejected; #replied};
+type Quote__360373269 =
+  {
+    var attachments : [Text];
+    clientId : UserId__158757552;
+    createdAt : Timestamp__301639476;
+    var estimationBreakdown : ?EstimationBreakdown__271673480;
+    id : QuoteId__928430161;
+    var proposedPrice : ?Nat;
+    var proposedTimeline : ?Text;
+    providerId : UserId__158757552;
+    var replyMessage : ?Text;
+    var replyType : ?ReplyType__896854598;
+    var requirements : Text;
+    serviceId : ServiceId__271116140;
+    var status : QuoteStatus__535515428;
+    var updatedAt : Timestamp__301639476
+  };
+type RatingId__630786876 = Nat;
+type Rating__68729563 =
+  {
+    bookingId : BookingId__572944220;
+    clientId : UserId__158757552;
+    comment : ?Text;
+    createdAt : Timestamp__301639476;
+    id : RatingId__630786876;
+    providerId : UserId__158757552;
+    var providerReply : ?Text;
+    serviceId : ServiceId__271116140;
+    stars : Nat
+  };
+type ReplyType__896854598 =
+  {#detailedEstimate; #messageOnly; #onSiteEstimate};
+type ServiceCategory__313329945 =
+  {#cleaning; #design; #garden; #homeRepair; #it; #marketing; #other};
+type ServiceId__271116140 = Nat;
+type Service__980514341 =
+  {
+    var basePrice : Nat;
+    var category : ServiceCategory__313329945;
+    createdAt : Timestamp__301639476;
+    var description : Text;
+    id : ServiceId__271116140;
+    var priceType : PriceType__421098867;
+    providerId : UserId__158757552;
+    var title : Text
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserRole__451090586 = {#client; #provider};
+type User__98118558 =
+  {
+    var bio : Text;
+    createdAt : Timestamp__301639476;
+    var displayName : Text;
+    id : UserId__158757552;
+    role : UserRole__451090586
+  };
+actor {
+  stable bookings :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Booking__1057793126]];
+      var elementIndex : Nat__490723111
+    };
+  stable invoices :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Invoice__447005592]];
+      var elementIndex : Nat__490723111
+    };
+  stable nextBookingId : {var value : Nat};
+  stable nextInvoiceId : {var value : Nat};
+  stable nextNotificationId : {var value : Nat};
+  stable nextQuoteId : {var value : Nat};
+  stable nextRatingId : {var value : Nat};
+  stable nextServiceId : {var value : Nat};
+  stable notifications :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Notification__797358294]];
+      var elementIndex : Nat__490723111
+    };
+  stable quotes :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Quote__360373269]];
+      var elementIndex : Nat__490723111
+    };
+  stable ratings :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Rating__68729563]];
+      var elementIndex : Nat__490723111
+    };
+  stable services :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Service__980514341]];
+      var elementIndex : Nat__490723111
+    };
+  stable users :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?User__98118558]];
+      var elementIndex : Nat__490723111
+    }
+};

@@ -1,0 +1,25 @@
+{
+  "overview": "ServiceHub is a marketplace platform connecting service providers and clients. Providers post services across 7 categories, clients request quotes with photo attachments, and Stripe escrow handles secure payments. Features include auto-invoices, star ratings, and a real-time notification bell.",
+  "features": [
+    "7 service categories: Home Repair, Cleaning, Design, IT, Marketing, Garden, Other",
+    "Quote requests with optional photo attachments and flexible provider replies",
+    "Stripe escrow: payment held until client confirms work is done",
+    "Auto-generated invoices viewable and printable by both parties",
+    "1-5 star ratings with comments on provider profiles",
+    "Separate provider and client dashboards",
+    "Real-time notification bell for quotes, replies, bookings, and payments",
+    "All data from real backend — zero mock content"
+  ],
+  "category": "marketplace",
+  "tags": [
+    "marketplace",
+    "services",
+    "quotes",
+    "bookings",
+    "payments",
+    "invoices",
+    "ratings",
+    "notifications"
+  ],
+  "last_updated": "2026-04-20T03:37:59.889Z"
+}

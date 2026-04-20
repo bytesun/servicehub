@@ -1,0 +1,242 @@
+type UserRole = 
+ variant {
+   client;
+   provider;
+ };
+type UserProfile = 
+ record {
+   bio: text;
+   createdAt: Timestamp;
+   displayName: text;
+   id: UserId;
+   role: UserRole;
+ };
+type UserId = principal;
+type UpdateServiceInput = 
+ record {
+   basePrice: opt nat;
+   category: opt ServiceCategory;
+   description: opt text;
+   priceType: opt PriceType;
+   title: opt text;
+ };
+type Timestamp = int;
+type ServiceView = 
+ record {
+   basePrice: nat;
+   category: ServiceCategory;
+   createdAt: Timestamp;
+   description: text;
+   id: ServiceId;
+   priceType: PriceType;
+   providerId: UserId;
+   title: text;
+ };
+type ServiceId = nat;
+type ServiceCategory = 
+ variant {
+   cleaning;
+   design;
+   garden;
+   homeRepair;
+   it;
+   marketing;
+   other;
+ };
+type RequestQuoteInput = 
+ record {
+   attachments: vec text;
+   requirements: text;
+   serviceId: ServiceId;
+ };
+type ReplyType = 
+ variant {
+   detailedEstimate;
+   messageOnly;
+   onSiteEstimate;
+ };
+type ReplyQuoteInput = 
+ record {
+   estimationBreakdown: opt EstimationBreakdown;
+   proposedPrice: opt nat;
+   proposedTimeline: opt text;
+   replyMessage: opt text;
+   replyType: ReplyType;
+ };
+type RegisterInput = 
+ record {
+   bio: text;
+   displayName: text;
+   role: UserRole;
+ };
+type RatingView = 
+ record {
+   bookingId: BookingId;
+   clientId: UserId;
+   comment: opt text;
+   createdAt: Timestamp;
+   id: RatingId;
+   providerId: UserId;
+   providerReply: opt text;
+   serviceId: ServiceId;
+   stars: nat;
+ };
+type RatingId = nat;
+type QuoteView = 
+ record {
+   attachments: vec text;
+   clientId: UserId;
+   createdAt: Timestamp;
+   estimationBreakdown: opt EstimationBreakdown;
+   id: QuoteId;
+   proposedPrice: opt nat;
+   proposedTimeline: opt text;
+   providerId: UserId;
+   replyMessage: opt text;
+   replyType: opt ReplyType;
+   requirements: text;
+   serviceId: ServiceId;
+   status: QuoteStatus;
+   updatedAt: Timestamp;
+ };
+type QuoteStatus = 
+ variant {
+   accepted;
+   cancelled;
+   pending;
+   rejected;
+   replied;
+ };
+type QuoteId = nat;
+type PriceType = 
+ variant {
+   fixed;
+   onSiteEstimate;
+ };
+type NotificationView = 
+ record {
+   body: text;
+   createdAt: Timestamp;
+   id: NotificationId;
+   isRead: bool;
+   link: text;
+   notifType: NotificationType;
+   recipientId: UserId;
+   title: text;
+ };
+type NotificationType = 
+ variant {
+   bookingConfirmed;
+   paymentReceived;
+   quoteReceived;
+   replyReceived;
+ };
+type NotificationId = nat;
+type InvoiceView = 
+ record {
+   amount: nat;
+   bookingId: BookingId;
+   clientId: UserId;
+   createdAt: Timestamp;
+   id: InvoiceId;
+   providerId: UserId;
+   serviceId: ServiceId;
+ };
+type InvoiceId = nat;
+type EstimationBreakdown = 
+ record {
+   hourlyRate: nat;
+   hours: nat;
+   labor: nat;
+   materials: nat;
+   notes: text;
+ };
+type EscrowStatus = 
+ variant {
+   held;
+   none;
+   refunded;
+   released;
+ };
+type CreateServiceInput = 
+ record {
+   basePrice: nat;
+   category: ServiceCategory;
+   description: text;
+   priceType: PriceType;
+   title: text;
+ };
+type CreateRatingInput = 
+ record {
+   bookingId: BookingId;
+   comment: opt text;
+   stars: nat;
+ };
+type BookingView = 
+ record {
+   agreedPrice: nat;
+   bookingStatus: BookingStatus;
+   clientId: UserId;
+   createdAt: Timestamp;
+   escrowStatus: EscrowStatus;
+   id: BookingId;
+   providerId: UserId;
+   quoteId: QuoteId;
+   serviceId: ServiceId;
+   updatedAt: Timestamp;
+ };
+type BookingStatus = 
+ variant {
+   cancelled;
+   completed;
+   disputed;
+   paymentPending;
+   started;
+ };
+type BookingId = nat;
+service : {
+  acceptQuote: (quoteId: QuoteId) -> (opt QuoteView);
+  cancelBooking: (bookingId: BookingId) -> (opt BookingView);
+  cancelQuote: (quoteId: QuoteId) -> (opt QuoteView);
+  createBooking: (quoteId: QuoteId) -> (BookingView);
+  createRating: (input: CreateRatingInput) -> (RatingView);
+  createService: (input: CreateServiceInput) -> (ServiceView);
+  deleteService: (serviceId: ServiceId) -> (bool);
+  getBooking: (bookingId: BookingId) -> (opt BookingView) query;
+  getInvoice: (invoiceId: InvoiceId) -> (opt InvoiceView);
+  getInvoiceByBooking: (bookingId: BookingId) -> (opt InvoiceView);
+  getMyProfile: () -> (opt UserProfile) query;
+  getQuote: (quoteId: QuoteId) -> (opt QuoteView) query;
+  getService: (serviceId: ServiceId) -> (opt ServiceView) query;
+  getUnreadNotificationCount: () -> (nat) query;
+  getUserProfile: (userId: UserId) -> (opt UserProfile) query;
+  listMyClientBookings: () -> (vec BookingView) query;
+  listMyClientInvoices: () -> (vec InvoiceView) query;
+  listMyClientQuotes: () -> (vec QuoteView) query;
+  listMyProviderBookings: () -> (vec BookingView) query;
+  listMyProviderInvoices: () -> (vec InvoiceView) query;
+  listMyProviderQuotes: () -> (vec QuoteView) query;
+  listMyServices: () -> (vec ServiceView) query;
+  listNotifications: (offset: nat, limit: nat) ->
+   (vec NotificationView) query;
+  listProviderRatings: (providerId: UserId) -> (vec RatingView) query;
+  listServiceRatings: (serviceId: ServiceId) -> (vec RatingView) query;
+  listServices: (category: opt ServiceCategory) -> (vec ServiceView) query;
+  markAllNotificationsAsRead: () -> ();
+  markBookingCompleted: (bookingId: BookingId) -> (opt BookingView);
+  markBookingDisputed: (bookingId: BookingId) -> (opt BookingView);
+  markBookingStarted: (bookingId: BookingId) -> (opt BookingView);
+  markNotificationAsRead: (notificationId: NotificationId) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  registerUser: (input: RegisterInput) -> (UserProfile);
+  rejectQuote: (quoteId: QuoteId) -> (opt QuoteView);
+  releaseEscrow: (bookingId: BookingId) -> (opt BookingView);
+  replyQuote: (quoteId: QuoteId, input: ReplyQuoteInput) -> (opt QuoteView);
+  replyRating: (ratingId: RatingId, reply: text) -> (opt RatingView);
+  requestQuote: (input: RequestQuoteInput) -> (QuoteView);
+  updateService: (serviceId: ServiceId, input: UpdateServiceInput) ->
+   (opt ServiceView);
+}
